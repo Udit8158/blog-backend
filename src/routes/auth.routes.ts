@@ -2,13 +2,22 @@ import express, { Request, Response } from "express";
 
 const authrouter = express.Router();
 
-type resBody = {
-  data: string;
-  error?: string;
-};
 
-authrouter.get("/", (req: Request, res: Response<resBody>) =>
-  res.send({ data: "Hi there, it's a test" })
-);
+
+authrouter.post("/register", (req: Request, res: Response) => {
+  res.send("Register");
+});
+
+authrouter.post("/login", (req: Request, res: Response) => {
+  res.send("Login");
+});
+
+authrouter.post("/logout", (req: Request, res: Response) => {
+  res.send("Logout");
+});
+
+authrouter.get("/me", (req: Request, res: Response) => {
+  res.send("Me");
+});
 
 export default authrouter;
