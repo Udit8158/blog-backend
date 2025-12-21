@@ -6,5 +6,6 @@ console.log(`Node Env - ${process.env.NODE_ENV || "development"}`);
 config({ path: `.env.${process.env.NODE_ENV || "development"}` });
 const port = process.env.PORT;
 const apiBaseUrl : string = process.env.API_BASE_URL || "/api/v2";
+const dbUri : string = process.env.DB_URI || "";
 
-export { port, apiBaseUrl };
+export { port, apiBaseUrl, dbUri };

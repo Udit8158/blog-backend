@@ -1,6 +1,7 @@
 // These will be for dashboard for admin
 
 import { Router, Request, Response } from "express";
+import Blog from "../models/blog.schema.js";
 
 const adminBlogRouter = Router();
 
@@ -8,8 +9,8 @@ adminBlogRouter.get("/", (req: Request, res: Response) => {
   res.send("All posts for admin");
 });
 
-adminBlogRouter.post("/", (req: Request, res: Response) => {
-  res.send("New post");
+adminBlogRouter.post("/", async (req: Request, res: Response) => {
+  // testing
 });
 
 adminBlogRouter.put("/:id", (req: Request, res: Response) => {
