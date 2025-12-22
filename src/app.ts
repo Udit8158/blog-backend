@@ -7,7 +7,7 @@ import dbConnect from "./config/db.js";
 import cookieParser from "cookie-parser";
 
 // connecting to db
-dbConnect().catch(console.dir);
+dbConnect().catch((error) => console.dir(error));
 
 const app = express();
 

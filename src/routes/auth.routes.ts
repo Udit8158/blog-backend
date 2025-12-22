@@ -1,14 +1,23 @@
 import express, { Request, Response } from "express";
 import validateAuthInput from "../middleware/validateAuthInput.js";
 import { signin, signout, signup } from "../controllers/auth.controllers.js";
+import rateLimit from "express-rate-limit";
 
 const authrouter = express.Router();
 
-authrouter.post("/register", validateAuthInput, signup);
+// rate limiter (we have to apply it directly here, and use it in the router, as middleware, you can't use it inside a middleware function normally)
 
-authrouter.post("/login", validateAuthInput, signin);
+const limiter = rateLimit({
+  windowMs: 1 * 60 * 1000, // 1M in ms
+  limit: 1, // how many requests can hit in each window
+  message: `TOO Many Requests`,
+});
 
-authrouter.post("/logout", signout);
+authrouter.post("/register", limiter, validateAuthInput, signup);
+
+authrouter.post("/login", limiter, validateAuthInput, signin);
+
+authrouter.post("/logout", limiter, signout);
 
 authrouter.get("/me", (req: Request, res: Response) => {
   res.send("Me");
