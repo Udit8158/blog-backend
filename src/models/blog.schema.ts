@@ -6,7 +6,7 @@ export interface IBlog {
   content: string;
   createdAt: Date;
   updatedAt: Date;
-  publishedAt?: Date | null;
+  publishedAt: Date | null;
   status: "draft" | "published";
   author: Schema.Types.ObjectId;
 }
@@ -36,7 +36,6 @@ const blogSchema = new Schema<IBlog>({
   },
   publishedAt: {
     type: Date || null,
-    required: true,
     default: null, // if not published yet
   },
   status: {

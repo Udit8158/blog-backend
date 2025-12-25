@@ -9,7 +9,7 @@ const authrouter = express.Router();
 
 const limiter = rateLimit({
   windowMs: 1 * 60 * 1000, // 1M in ms
-  limit: 1, // how many requests can hit in each window
+  limit: 10, // how many requests can hit in each window
   message: `TOO Many Requests`,
 });
 

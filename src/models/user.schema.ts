@@ -1,10 +1,11 @@
-import { Schema, model } from "mongoose";
+import mongoose, { Schema, model } from "mongoose";
 
 export interface IUser {
   name: string;
   email: string;
   password: string;
   role: "user" | "admin";
+  blogs: []
 }
 
 const userSchema = new Schema<IUser>({
@@ -26,6 +27,7 @@ const userSchema = new Schema<IUser>({
     enum: ["user", "admin"],
     default: "user",
   },
+  blogs: [{type: Schema.Types.ObjectId, ref: "Blog"}]
 
 });
 

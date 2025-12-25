@@ -2,6 +2,8 @@
 
 import { Router, Request, Response } from "express";
 import Blog from "../models/blog.schema.js";
+import validateUser from "../middleware/validateUser.js";
+import { createBlog } from "../controllers/blog.admin.controller.js";
 
 const adminBlogRouter = Router();
 
@@ -9,9 +11,7 @@ adminBlogRouter.get("/", (req: Request, res: Response) => {
   res.send("All posts for admin");
 });
 
-adminBlogRouter.post("/", async (req: Request, res: Response) => {
-  // testing
-});
+adminBlogRouter.post("/", validateUser, createBlog);
 
 adminBlogRouter.put("/:id", (req: Request, res: Response) => {
   res.send("Update post");

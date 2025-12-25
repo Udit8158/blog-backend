@@ -7,6 +7,7 @@ function isValidEmail(email: string): boolean {
   return emailRegex.test(email);
 }
 
+// For validating input from user in auth routes
 export default function validateAuthInput(
   req: Request,
   res: Response,
