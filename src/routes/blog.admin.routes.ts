@@ -2,14 +2,14 @@
 
 import { Router, Request, Response } from "express";
 import Blog from "../models/blog.schema.js";
-import validateUser from "../middleware/validateUser.js";
+import validateAdmin from "../middleware/validateAdmin.js";
 import { createBlog } from "../controllers/blog.admin.controller.js";
 
 const adminBlogRouter = Router();
 
-adminBlogRouter.get("/", validateUser,);
+adminBlogRouter.get("/", validateAdmin);
 
-adminBlogRouter.post("/", validateUser, createBlog);
+adminBlogRouter.post("/", validateAdmin, createBlog);
 
 adminBlogRouter.put("/:id", (req: Request, res: Response) => {
   res.send("Update post");

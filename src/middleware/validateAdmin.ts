@@ -4,7 +4,7 @@ import jwt from "jsonwebtoken";
 import { jwtSecret } from "../config/env.js";
 
 // For protecting routes
-export default function validateUser(
+export default function validateAdmin(
   req: Request,
   res: Response,
   next: NextFunction
