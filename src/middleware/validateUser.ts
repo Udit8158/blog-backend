@@ -22,10 +22,20 @@ export default function validateUser(
       });
 
     // checking for valid token
-    const payload = jwt.verify(token, jwtSecret);
+    const payload: any = jwt.verify(token, jwtSecret);
+    if (payload.role !== "admin") {
+      return  responseJsonHandler({
+        success: false,
+        statusCode: 401,
+        res,
+        message: "You're not admin",
+        data: null,
+      });
+    }
     // TODO: Need to solve this later (should not have @tsignore)
     //@ts-ignore
     req.payload = payload;
+
     next();
   } catch (error) {
     responseJsonHandler({

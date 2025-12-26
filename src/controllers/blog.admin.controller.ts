@@ -76,4 +76,7 @@ async function createBlog(req: Request, res: Response) {
   }
 }
 
+async function getAllBlogs(req: Request, res: Response) {
+  
+}
 export { createBlog };

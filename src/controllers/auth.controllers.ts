@@ -29,6 +29,7 @@ const signup = async (req: Request, res: Response) => {
       email,
       password: hashedPasswordToStoreInDB,
       role: "user",
+      blogs: [],
     };
     const newUser = await User.create(userData);
 
@@ -78,9 +79,13 @@ const signin = async (req: Request, res: Response) => {
       });
 
     // if everything is alright passing the access token in the cookie
-    const token = jwt.sign({ userId: foundUser._id }, jwtSecret, {
-      expiresIn: "24h",
-    });
+    const token = jwt.sign(
+      { userId: foundUser._id, role: foundUser.role },
+      jwtSecret,
+      {
+        expiresIn: "24h",
+      }
+    );
     res.cookie("access-token", token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",

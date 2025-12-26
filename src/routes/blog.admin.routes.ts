@@ -7,9 +7,7 @@ import { createBlog } from "../controllers/blog.admin.controller.js";
 
 const adminBlogRouter = Router();
 
-adminBlogRouter.get("/", (req: Request, res: Response) => {
-  res.send("All posts for admin");
-});
+adminBlogRouter.get("/", validateUser,);
 
 adminBlogRouter.post("/", validateUser, createBlog);
 
