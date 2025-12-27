@@ -76,7 +76,51 @@ async function createBlog(req: Request, res: Response) {
   }
 }
 
-async function getAllBlogs(req: Request, res: Response) {
+async function getBlogsForAdmin(req: Request, res: Response) {
+  try {
+    // handeling query params
+    const { blogs } = req.query;
+    if (!blogs) {
+      return responseJsonHandler({
+        success: false,
+        statusCode: 400,
+        res,
+        message:
+          "Please specify blogs like '?blog=10' to get that number of blogs",
+        data: null,
+      });
+    }
+
+    // get that many blogs from DB for the user
+    // @ts-ignore TODO: Fix the payload type
+    const { userId } = req.payload;
+
+    // TODO: ig there can be better ways to do this
+    const numberOfBlogsUserNeed = Number(blogs);
+    console.log(numberOfBlogsUserNeed);
+
   
+    // Getting the blogs
+    const blogsOfUser = await Blog.find({ author: userId }).limit(
+      numberOfBlogsUserNeed
+    );
+
+    return responseJsonHandler({
+      statusCode: 200,
+      res,
+      success: true,
+      message: "Successfully get all the blogs by Admin 🫡",
+      data: blogsOfUser,
+    });
+  } catch (error) {
+    return responseJsonHandler({
+      statusCode: 500,
+      res,
+      success: false,
+      message:
+        "Error in catch blog inside getBlogForAdmin function in blog.admin.controller file",
+      data: error,
+    });
+  }
 }
-export { createBlog };
+export { createBlog, getBlogsForAdmin };

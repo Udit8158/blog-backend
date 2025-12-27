@@ -3,11 +3,11 @@
 import { Router, Request, Response } from "express";
 import Blog from "../models/blog.schema.js";
 import validateAdmin from "../middleware/validateAdmin.js";
-import { createBlog } from "../controllers/blog.admin.controller.js";
+import { createBlog, getBlogsForAdmin } from "../controllers/blog.admin.controller.js";
 
 const adminBlogRouter = Router();
 
-adminBlogRouter.get("/", validateAdmin);
+adminBlogRouter.get("/", validateAdmin, getBlogsForAdmin);
 
 adminBlogRouter.post("/", validateAdmin, createBlog);
 
