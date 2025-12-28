@@ -3,7 +3,11 @@
 import { Router, Request, Response } from "express";
 import Blog from "../models/blog.schema.js";
 import validateAdmin from "../middleware/validateAdmin.js";
-import { createBlog, getBlogsForAdmin } from "../controllers/blog.admin.controller.js";
+import {
+  createBlog,
+  getBlogsForAdmin,
+  updateBlog,
+} from "../controllers/blog.admin.controller.js";
 
 const adminBlogRouter = Router();
 
@@ -11,11 +15,9 @@ adminBlogRouter.get("/", validateAdmin, getBlogsForAdmin);
 
 adminBlogRouter.post("/", validateAdmin, createBlog);
 
-adminBlogRouter.put("/:id", (req: Request, res: Response) => {
-  res.send("Update post");
-});
+adminBlogRouter.put("/:blogId", validateAdmin, updateBlog);
 
-adminBlogRouter.delete("/:id", (req: Request, res: Response) => {
+adminBlogRouter.delete("/:blogId", (req: Request, res: Response) => {
   res.send("Delete post");
 });
 

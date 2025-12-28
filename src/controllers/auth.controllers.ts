@@ -57,7 +57,8 @@ const signin = async (req: Request, res: Response) => {
 
     // find a user in db with the email
     const foundUser = await User.findOne({ email });
-
+    console.log(foundUser);
+    
     if (!foundUser)
       return responseJsonHandler({
         success: false,
