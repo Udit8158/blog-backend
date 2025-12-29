@@ -94,8 +94,7 @@ async function getBlogsForAdmin(req: Request, res: Response) {
 
     // get that many blogs from DB for the user
     const { userId } = req.payload;
-    console.log(userId);
-
+  
     // TODO: ig there can be better ways to do this
     const numberOfBlogsUserNeed = Number(blogs);
 
@@ -104,6 +103,15 @@ async function getBlogsForAdmin(req: Request, res: Response) {
       numberOfBlogsUserNeed
     );
 
+    if (blogsOfUser.length === 0) {
+    return responseJsonHandler({
+      statusCode: 200,
+      res,
+      success: true,
+      message: "Oops, you don't have any blogs",
+      data: blogsOfUser,
+    });  
+    }
     return responseJsonHandler({
       statusCode: 200,
       res,
@@ -125,40 +133,7 @@ async function getBlogsForAdmin(req: Request, res: Response) {
 
 async function updateBlog(req: Request, res: Response) {
   try {
-    const { blogId } = req.params;
-
-    if (!blogId) {
-      return responseJsonHandler({
-        statusCode: 400,
-        res,
-        message: "Add ?blogId in parameter",
-        data: null,
-        success: false,
-      });
-    }
-
-    const { userId } = req.payload;
-
-    // find the blog first
-    const foundBlog = await Blog.findById(blogId); // we can also directly search with blogId and userId 
-    if (!foundBlog)
-      return responseJsonHandler({
-        statusCode: 404,
-        res,
-        message: "Blogid is not valid",
-        data: null,
-        success: false,
-      });
-
-    // check for the author access
-    if (foundBlog.author != userId)
-      return responseJsonHandler({
-        statusCode: 403,
-        res,
-        message: "You're not the author for this blog, so you can't update",
-        data: null,
-        success: false,
-      });
+    const foundBlog = req.foundBlog;
 
     // check for req body undefined or not
     if (!req.body) {
@@ -194,7 +169,7 @@ async function updateBlog(req: Request, res: Response) {
       success: true,
     });
   } catch (error) {
-    console.log(error)
+    console.log(error);
     if (error instanceof z.ZodError) {
       return responseJsonHandler({
         success: false,
@@ -215,4 +190,62 @@ async function updateBlog(req: Request, res: Response) {
   }
 }
 
-export { createBlog, getBlogsForAdmin, updateBlog };
+async function deleteBlogByAdmin(req: Request, res: Response) {
+  try {
+    const foundBlog = req.foundBlog; // NOTE: foundblog should be typed better in the express type file ig
+
+    await foundBlog.deleteOne(); // delete the blog
+    return responseJsonHandler({
+      success: true,
+      res,
+      statusCode: 200,
+      message: "Blog is deleted successfully",
+      data: null,
+    });
+  } catch (error) {
+    console.log(error);
+    return responseJsonHandler({
+      statusCode: 500,
+      res,
+      message: "Inside catch block, in the deleteBlogByAdmin function",
+      data: null,
+      success: false,
+    });
+  }
+}
+
+async function publishBlogByAdmin(req: Request, res: Response) {
+  try {
+    const foundBlog = req.foundBlog;
+
+    foundBlog.publishedAt = new Date();
+    foundBlog.status = "published";
+
+    await foundBlog.save();
+
+    return responseJsonHandler({
+      success: true,
+      res,
+      message: "Blog published successfully",
+      data: foundBlog,
+      statusCode: 200,
+    });
+  } catch (error) {
+    console.log(error);
+    return responseJsonHandler({
+      success: false,
+      res,
+      message: "Inside catch block in the publish blog function",
+      data: error,
+      statusCode: 500,
+    });
+  }
+}
+
+export {
+  createBlog,
+  getBlogsForAdmin,
+  updateBlog,
+  deleteBlogByAdmin,
+  publishBlogByAdmin,
+};

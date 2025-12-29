@@ -11,7 +11,7 @@ export interface IBlog {
   author: Schema.Types.ObjectId;
 }
 
-const blogSchema = new Schema<IBlog>({
+export const blogSchema = new Schema<IBlog>({
   title: {
     type: String,
     required: true,
