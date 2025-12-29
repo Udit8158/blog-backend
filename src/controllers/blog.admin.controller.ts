@@ -191,10 +191,18 @@ async function updateBlog(req: Request, res: Response) {
 }
 
 async function deleteBlogByAdmin(req: Request, res: Response) {
+  const session = await mongoose.startSession()
+  session.startTransaction()
   try {
     const foundBlog = req.foundBlog; // NOTE: foundblog should be typed better in the express type file ig
 
-    await foundBlog.deleteOne(); // delete the blog
+
+    await foundBlog.deleteOne({session}); // delete the blog
+
+    await User.updateOne({_id: req.payload.userId}, {$pull: {blogs: foundBlog._id}}, {session})
+
+    await session.commitTransaction() // successfull both 
+
     return responseJsonHandler({
       success: true,
       res,
@@ -203,6 +211,7 @@ async function deleteBlogByAdmin(req: Request, res: Response) {
       data: null,
     });
   } catch (error) {
+    await session.abortTransaction() // fail one or both transactions
     console.log(error);
     return responseJsonHandler({
       statusCode: 500,
@@ -211,6 +220,9 @@ async function deleteBlogByAdmin(req: Request, res: Response) {
       data: null,
       success: false,
     });
+  }
+  finally {
+    await session.endSession() // cleanup
   }
 }
 
