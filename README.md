@@ -16,6 +16,8 @@
 | `GET`  | `/api/v1/admin/blogs`                      | Get all blogs                  | Not recommended for large datasets |
 | `POST` | `/api/v1/admin/blogs`                      | Create a new blog              | -                                  |
 | `PUT`  | `/api/v1/admin/blogs/:blogId`              | Update a specific blog         | Requires blog ID parameter         |
-| `PATCH`  | `/api/v1/admin/blogs/publish/:blogId`      | Publish a specific blog        | Requires blog ID parameter         |
+| `PATCH`| `/api/v1/admin/blogs/publish/:blogId`      | Publish a specific blog        | Requires blog ID parameter         |
+| `GET`| `/api/v1/blogs/`                             | Get all published blogs        | Public endpoint to get all blog by me (admin)|
+| `GET`| `/api/v1/blogs/:blogId`                      | Get the specific blog          | Public endpoint to get the blog by me (admin)|
 
 **Base URL (In Dev):** `localhost:80` 
