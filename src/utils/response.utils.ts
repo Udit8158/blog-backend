@@ -9,7 +9,7 @@ interface IResponseJson {
 }
 
 function responseJsonHandler(params: IResponseJson) {
-  return params.res.json({
+  return params.res.status(params.statusCode).json({
     statusCode: params.statusCode,
     message: params.message,
     data: params.data,

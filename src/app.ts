@@ -7,7 +7,9 @@ import dbConnect from "./config/db.js";
 import cookieParser from "cookie-parser";
 
 // connecting to db
-dbConnect().catch((error) => console.dir(error));
+if (process.env.NODE_ENV !== "test") {
+  dbConnect().catch((error) => console.dir(error));
+}
 
 const app = express();
 
@@ -18,4 +20,8 @@ app.use(`${apiBaseUrl}/auth`, authrouter);
 app.use(`${apiBaseUrl}/admin/blogs`, adminBlogRouter);
 app.use(`${apiBaseUrl}/blogs`, blogRouter);
 
-app.listen(port, () => console.log(`Server is running on ${port}`));
+if (process.env.NODE_ENV !== "test") {
+  app.listen(port, () => console.log(`Server is running on ${port}`));
+}
+
+export default app;
