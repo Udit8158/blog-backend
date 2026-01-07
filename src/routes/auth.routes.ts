@@ -1,6 +1,6 @@
 import express, { Request, Response } from "express";
 import validateAuthInput from "../middleware/validateAuthInput.js";
-import { signin, signout, signup } from "../controllers/auth.controllers.js";
+import { signin, signout, signup, validateToken } from "../controllers/auth.controllers.js";
 import rateLimit from "express-rate-limit";
 
 const authrouter = express.Router();
@@ -19,8 +19,6 @@ authrouter.post("/login", limiter, validateAuthInput, signin);
 
 authrouter.post("/logout", limiter, signout);
 
-authrouter.get("/me", (req: Request, res: Response) => {
-  res.send("Me");
-});
+authrouter.get("/me", validateToken);
 
 export default authrouter;

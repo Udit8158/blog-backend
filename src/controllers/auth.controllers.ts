@@ -58,7 +58,7 @@ const signin = async (req: Request, res: Response) => {
     // find a user in db with the email
     const foundUser = await User.findOne({ email });
     console.log(foundUser);
-    
+
     if (!foundUser)
       return responseJsonHandler({
         success: false,
@@ -133,4 +133,39 @@ const signout = async (req: Request, res: Response) => {
   }
 };
 
-export { signup, signin, signout };
+const validateToken = async (req: Request, res: Response) => {
+  try {
+    const access_token = req.cookies['access-token'];
+    console.log(access_token);
+    if (!access_token)
+      return responseJsonHandler({
+        statusCode: 404,
+        res,
+        message: "No access token found in the request",
+        data: null,
+        success: false,
+      });
+
+    // @ts-ignore
+    const payload = jwt.verify(access_token, jwtSecret);
+
+    return responseJsonHandler({
+      success: true,
+      res,
+      message: "Validated the token",
+      data: payload,
+      statusCode: 200,
+    });
+  } catch (error) {
+    console.log(error);
+    return responseJsonHandler({
+      statusCode: 500,
+      res,
+      message: "Catch block",
+      data: error,
+      success: false,
+    });
+  }
+};
+
+export { signup, signin, signout, validateToken };

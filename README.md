@@ -7,6 +7,7 @@
 | `POST` | `/api/v1/auth/register` | Sign up a new user        | `{ "name": "string", "email": "string", "password": "string" }` |
 | `POST` | `/api/v1/auth/login`    | Sign in an existing user  | `{ "email": "string", "password": "string" }`                   |
 | `POST` | `/api/v1/auth/logout`   | Sign out the current user | -                                                               |
+| `GET`  | `/api/v1/auth/me`       | Get current user info     | -                                                               |
 
 ### Blog Routes
 
